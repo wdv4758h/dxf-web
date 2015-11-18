@@ -11,5 +11,5 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^test/', DXFFileCreate.as_view()),
+    url(r'^test/', DXFFileCreate.as_view(), name='dxf_create'),
 )
