@@ -18,3 +18,6 @@ class DXFFileCreate(CreateView):
 
 class DXFFileDetail(DetailView):
     model = DXFFile
+
+def index(request):
+    return render_to_response('files/index.html')

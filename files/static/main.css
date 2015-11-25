@@ -1,0 +1,8 @@
+body {
+	padding: 4em;
+}
+
+.ui.menu .item {
+    font-weight: 300;
+    font-size: 0.9rem;
+}
