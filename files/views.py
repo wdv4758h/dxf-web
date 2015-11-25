@@ -12,11 +12,7 @@ class DXFFileCreate(CreateView):
 
     def form_valid(self, form):
         original_result = super(DXFFileCreate, self).form_valid(form)    # redirection HTML
-        print('=' * 20)
-        self.object.length = calc_length(self.object.file)    # FIXME
-        self.object.save()
-        print('total length is: {}'.format(self.object.length))
-        print('=' * 20)
+        calc_length.delay(self.object)
         return original_result
 
 

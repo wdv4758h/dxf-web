@@ -2,6 +2,11 @@ from celery import shared_task
 
 
 @shared_task
-def calc_length(filepath):
+def calc_length(fileobject):
+    print('=' * 20)
     # your calculation
-    return 0.0
+    # fileobject.file
+    fileobject.length = 42
+    fileobject.save()
+    print('total length is: {}'.format(fileobject.length))
+    print('=' * 20)
