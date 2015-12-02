@@ -3,5 +3,5 @@ from .views import DXFFileCreate, DXFFileDetail, index
 
 urlpatterns = patterns('',
     url(r'^$', DXFFileCreate.as_view(), name='dxf_create'),
-    url(r'^view/(\d+)/$', DXFFileDetail.as_view(), name='dxf_detail'),
+    url(r'^view/(?P<pk>\d+)/$', DXFFileDetail.as_view(), name='dxf_detail'),
 )
