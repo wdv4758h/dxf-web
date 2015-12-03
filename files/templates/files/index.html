@@ -17,11 +17,6 @@
 
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="/static/main.css">
-	<style>
-		.hidden {
-			display: none;
-		}
-	</style>
     <!-- endbuild -->
 </head>
 <body>
@@ -35,27 +30,81 @@
 			</div>
             <div class="ui ten wide column">
 				<div class="ui three top attached steps">
-					<div class="active step">
+					<div id="step1h" class="active step">
 						<i class="puzzle icon"></i>
 						<div class="content">
 							<div class="title">Select material</div>
 						</div>
 					</div>
-					<div class="step">
+					<div id="step2h" class="step">
 						<i class="options icon"></i>
 						<div class="content">
 							<div class="title">Parameters</div>
 						</div>
 					</div>
-					<div class="step">
+					<div id="step3h" class="step">
 						<i class="browser icon"></i>
 						<div class="content">
 							<div class="title">Result</div>
 						</div>
 					</div>
 				</div>
-				<div class="ui attached segment">
-					<p>Select your materials</p>
+				<div class="ui attached secondary segment">
+					<div id="step1" class="ui form">
+						<div class="grouped fields">
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input name="material" checked="checked" type="radio">
+									<label>Red</label>
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input name="material" type="radio">
+									<label>Blue</label>
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input name="material" type="radio">
+									<label>Purple</label>
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input name="material" type="radio">
+									<label>Silver</label>
+								</div>
+							</div>
+						</div>
+						<button id="to2" class="ui blue right labeled icon button">
+							<i class="right arrow icon"></i>
+							Next
+						</button>
+					</div>
+
+					<div id="step2" class="ui form hidden">
+						<p>
+						<label>Force</label>
+						<input type="range" name="points" min="0" max="10">
+						</p>
+						<p>
+						<label>Speed</label>
+						<input type="range" name="points2" min="0" max="10">
+						</p>
+						<p>
+						<label>Voltage</label>
+						 <input type="range" name="points3" min="0" max="10">
+						</p>
+						<button id="to1" class="ui red left labeled icon button">
+							<i class="left arrow icon"></i>
+							Previous
+						</button>
+						<button id="to3" class="ui blue right labeled icon button">
+							<i class="right arrow icon"></i>
+							Next
+						</button>
+					</div>
 				</div>
             </div>
         </div>
@@ -93,6 +142,19 @@
 						get_result(url);
 					 }
 		 };
+		 $('#to2, #step2h').click(function() {
+			 $('#step1').addClass('hidden');
+			 $('#step2').removeClass('hidden');
+			 $('#step1h').removeClass('active');
+			 $('#step2h').addClass('active');
+			 });
+
+		 $('#to1, #step1h').click(function() {
+			 $('#step2').addClass('hidden');
+			 $('#step1').removeClass('hidden');
+			 $('#step2h').removeClass('active');
+			 $('#step1h').addClass('active');
+			 });
 		 });
 	</script>
     <!-- endbower -->
