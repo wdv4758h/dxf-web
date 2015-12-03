@@ -11,5 +11,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home', 'files.views.index'),
-    url(r'', include('files.urls')),
+    url(r'', include('files.urls', namespace='files')),
 )
