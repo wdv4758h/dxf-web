@@ -10,6 +10,7 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="http://semantic-ui.com/dist/semantic.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/dropzone.css">
     <!-- endbower -->
     <!-- endbuild -->
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700,300&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
@@ -25,7 +26,7 @@
         <div class="row">
             <div class="ui six wide column">
 				<!--<img class="ui small image" src="http://semantic-ui.com/images/wireframe/image.png">-->
-				<div class="ui active loader"></div>
+				<form action="{% url 'files:dxf_create' %}" class="dropzone"></form>
 			</div>
             <div class="ui ten wide column">
 				<div class="ui three top attached steps">
@@ -59,6 +60,7 @@
     <!-- bower:js -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.13.0/javascript/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 </body>
