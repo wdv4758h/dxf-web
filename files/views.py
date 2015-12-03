@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.http import JsonResponse
+from django.template.context_processors import csrf
 from .models import DXFFile
 from .tasks import calc_length
 
@@ -16,7 +17,7 @@ class DXFFileCreate(CreateView):
         return JsonResponse({'result_url': success_url.url})
 
     def get_success_url(self):
-        return reverse('dxf_detail', kwargs={'pk': self.object.id})
+        return reverse('files:dxf_detail', kwargs={'pk': self.object.id})
 
 
 class DXFFileDetail(DetailView):
@@ -27,4 +28,6 @@ class DXFFileDetail(DetailView):
         return JsonResponse({'length': self.object.length})
 
 def index(request):
-    return render_to_response('files/index.html')
+    c = {}
+    c.update(csrf(request))
+    return render_to_response('files/index.html', c)
