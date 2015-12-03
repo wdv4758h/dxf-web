@@ -17,6 +17,11 @@
 
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="/static/main.css">
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
     <!-- endbuild -->
 </head>
 <body>
@@ -26,7 +31,7 @@
         <div class="row">
             <div class="ui six wide column">
 				<!--<img class="ui small image" src="http://semantic-ui.com/images/wireframe/image.png">-->
-				<form action="{% url 'files:dxf_create' %}" class="dropzone">{% csrf_token %}</form>
+				<form id="my" action="{% url 'files:dxf_create' %}" class="dropzone">{% csrf_token %}</form>
 			</div>
             <div class="ui ten wide column">
 				<div class="ui three top attached steps">
@@ -54,6 +59,11 @@
 				</div>
             </div>
         </div>
+		<div id="length" class="row hidden">
+			<div class="ui six wide column">
+				<h4 class="ui header">Total Length: unknown</h4>
+			</div>
+		</div>
     </main>
     
     <!-- build:js scripts/vendor.js -->
@@ -61,6 +71,30 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.13.0/javascript/semantic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
+	<script>
+	var url = '';
+	var finished = false;
+	var length = 0.0;
+
+	function get_result(url) {
+		 $.getJSON(url, function(data) {
+			 console.log(data);
+			 length = data.length;
+			 $('#length').removeClass('hidden');
+			 $('#length h4').text('Total Length: '+length.toString());
+			 });
+	}
+
+	$('document').ready(function() {
+		Dropzone.options.my = {
+			success: function(res) {
+						console.log(res);
+						url = JSON.parse(res.xhr.response)['result_url'];
+						get_result(url);
+					 }
+		 };
+		 });
+	</script>
     <!-- endbower -->
     <!-- endbuild -->
 </body>
