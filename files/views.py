@@ -9,7 +9,7 @@ from .tasks import calc_length
 
 class DXFFileCreate(CreateView):
     model = DXFFile
-    fields = ['file']
+    fields = ['dxf_file']
 
     def form_valid(self, form):
         success_url = super(DXFFileCreate, self).form_valid(form)
@@ -25,8 +25,35 @@ class DXFFileDetail(DetailView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        return JsonResponse({'finish': self.object.finish, 'length': self.object.length})
-        return JsonResponse({'length': self.object.length})
+        return JsonResponse({'finish': self.object.length_finish, 'length': self.object.length})
+
+
+class DXFFileNurbs(DetailView):
+    model = DXFFile
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        nurbs = self.object.nurbs
+
+        data = []
+        datum = dict()
+
+        for i in nurbs.split('\n'):
+            if i in ['SPLINE']:
+                if datum:
+                    data.append(datum)
+                datum = dict()
+                datum['type'] = i
+            elif i.startswith('ctrlp'):
+                datum['ctrlp'] = datum.get('ctrlp', []) + [[float(i) for i in i.split()[1:]]]
+            elif i.startswith('knot'):
+                datum['knot'] = datum.get('knot', []) + [float(i.split()[1])]
+
+        if datum:
+            data.append(datum)
+
+        return JsonResponse({'finish': self.object.nurbs_finish, 'data': data})
+
 
 def index(request):
     c = {}
