@@ -7,6 +7,7 @@ def calc_length(fileobject):
     # your calculation
     # fileobject.file
     fileobject.length = 42
+    fileobject.finish = True
     fileobject.save()
     print('total length is: {}'.format(fileobject.length))
     print('=' * 20)

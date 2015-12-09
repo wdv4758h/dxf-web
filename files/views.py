@@ -25,6 +25,7 @@ class DXFFileDetail(DetailView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        return JsonResponse({'finish': self.object.finish, 'length': self.object.length})
         return JsonResponse({'length': self.object.length})
 
 def index(request):
