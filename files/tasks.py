@@ -1,3 +1,4 @@
+from __future__ import print_function
 from dxf_to_nurbs import rdxf
 
 from celery import shared_task
