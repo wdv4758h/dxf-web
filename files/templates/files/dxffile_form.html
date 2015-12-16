@@ -14,12 +14,52 @@
     <input type="submit" value="Create" />
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
 <script src="{% static 'NURBSCurve.js' %}"></script>
 <script src="{% static 'NURBSUtils.js' %}"></script>
 <script src="{% static 'scene.js' %}"></script>
 <script>
 init();
 animate();
+</script>
+<script>
+var splines_res = [];
+var url = '';
+function poll() {
+	setTimeout(function() {
+			$.ajax({ url: url, success: function(data) {
+				console.log(data);
+				if (data.finish == true) {
+					console.log('finished');
+					$.ajax({ url: url+'nurbs', success: function(res) {
+						splines_res = res.data;
+						load_splines(splines_res);
+						}, error: function(xhr, code, msg) {
+						console.log('Getting nurbs failed: '+code+' '+msg);
+						}
+					});
+				} else {
+				console.log('not finished');
+				poll();
+				}
+				}, dataType: "json"});
+			}, 500);
+}
+$('#uploaddxf').ajaxForm();
+$('#uploaddxf').submit(function (e) {
+		$(this).ajaxSubmit({
+			type: "POST",
+			url: '/',
+			success: function(data) {
+				console.log(data);
+				url = data.result_url;
+				poll();
+			}
+			});
+
+		e.preventDefault();
+		});
 </script>
 </body
 </html>
