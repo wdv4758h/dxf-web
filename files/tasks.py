@@ -4,8 +4,10 @@ from dxf_to_nurbs import rdxf
 from celery import shared_task
 
 from io import StringIO
+from tempfile import NamedTemporaryFile
 import subprocess
 import sys
+import os.path
 
 
 @shared_task
@@ -32,10 +34,19 @@ def calc_length(fileobject):
     # Length Calculation
     ########################################
 
-    # your calculation
-    # fileobject.file
+    # need to place "calc_distance" binary under the same folder
 
-    fileobject.length = 42
+    with NamedTemporaryFile() as f:
+        f.write(fileobject.nurbs)
+        f.flush()
+        p = subprocess.Popen([os.path.join(os.path.dirname(os.path.realpath(__file__)), 'calc_distance'), f.name],
+                             stdout=subprocess.PIPE)
+        p.wait()
+        result = p.stdout.read()
+        lengths = filter(lambda x: 'length' in x, result.split('\n'))
+        total = sum(float(i.split()[-1]) for i in lengths)
+        fileobject.length = total
+
     fileobject.length_finish = True
     fileobject.save()
 
