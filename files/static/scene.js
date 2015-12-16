@@ -43,8 +43,8 @@ var init = function() {
 	light.position.set( 1, 1, 1 );
 	scene.add( light );
 
-	//grid_xy = new THREE.GridHelper( 2000, 100 );
-	grid_xy.setColors( 0xff7777, 0xf0f0f0 );
+	grid_xy = new THREE.GridHelper( 2000, 100 );
+	//grid_xy.setColors( 0xff7777, 0xf0f0f0 );
 	grid_xy.setColors(0xff7777, 0x109910);
 	grid_xy.rotateOnAxis(new THREE.Vector3(1,0,0), 90* Math.PI/180)
 	scene.add( grid_xy );
