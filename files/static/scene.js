@@ -62,9 +62,9 @@ var init = function() {
 	renderer.setSize( width, height );
 	document.getElementById('canvas').appendChild( renderer.domElement );
 
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-	document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-	document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+	document.getElementById('canvas').addEventListener( 'mousedown', onDocumentMouseDown, false );
+	document.getElementById('canvas').addEventListener( 'touchstart', onDocumentTouchStart, false );
+	document.getElementById('canvas').addEventListener( 'touchmove', onDocumentTouchMove, false );
 
 	window.addEventListener( 'resize', onWindowResize, false );
 

@@ -12,6 +12,13 @@
 <form id="uploaddxf" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Create" />
+</form>
+<h2>Use analyzed DXF</h2>
+<form id="directinput">
+	<input type="text" name="custom_url"/>
+    <input type="submit" value="Get result" />
+	<button id="clear">Clear scene</button>
+</form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
@@ -59,6 +66,23 @@ $('#uploaddxf').submit(function (e) {
 			});
 
 		e.preventDefault();
+		});
+$('#directinput').submit(function (e) {
+		var custom_url = $('input[name="custom_url"]').val();
+		console.log(custom_url);
+		$.ajax({ url: '/view/'+custom_url+'/nurbs', success: function(res) {
+			splines_res = res.data;
+			load_splines(splines_res);
+			}, error: function(xhr, code, msg) {
+			console.log('Getting nurbs failed: '+code+' '+msg);
+			alert('Getting nurbs failed: '+code+' '+msg);
+			}
+		});
+		e.preventDefault();
+		});
+$('#clear').click(function(e) {
+		e.preventDefault();
+		group.children = [];
 		});
 </script>
 </body
