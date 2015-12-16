@@ -1,7 +1,7 @@
 var container, stats;
 
 var camera, scene, renderer;
-var group;
+var group, grid_xz, grid_xy;
 
 var targetRotation = 0;
 var targetRotationOnMouseDown = 0;
@@ -14,13 +14,24 @@ var mouseXOnMouseDown = 0;
 var windowHalfX = w / 2;
 var windowHalfY = h / 2;
 
+var max = {
+	x: 0,
+	y: 0,
+	z: 0
+}
+var min = {
+	x: 0,
+	y: 0,
+	z: 0
+}
+
 // init base grid
 var init = function() {
 
 	var height = document.getElementById('canvas').offsetHeight;
 	var width = document.getElementById('canvas').offsetWidth;
 
-	camera = new THREE.PerspectiveCamera( 70, width / height, 1, 1000 );
+	camera = new THREE.PerspectiveCamera( 70, width / height, 1, 2000 );
 	camera.position.z = 300;
 	camera.position.x = 100;
 	camera.position.y = 10;
@@ -32,12 +43,17 @@ var init = function() {
 	light.position.set( 1, 1, 1 );
 	scene.add( light );
 
-	var grid = new THREE.GridHelper( 2000, 10 );
-	grid.setColors( 0xff7777, 0xff7777 );
-	scene.add( grid );
+	//grid_xy = new THREE.GridHelper( 2000, 100 );
+	grid_xy.setColors( 0xff7777, 0xf0f0f0 );
+	grid_xy.setColors(0xff7777, 0x109910);
+	grid_xy.rotateOnAxis(new THREE.Vector3(1,0,0), 90* Math.PI/180)
+	scene.add( grid_xy );
+	grid_xz = new THREE.GridHelper( 2000, 100 );
+	grid_xz.setColors( 0x7777ff, 0xccccff );
+	scene.add( grid_xz );
 
 	group = new THREE.Group();
-	group.position.y = 170;
+	//group.position.y = 170;
 	scene.add( group );
 
 	renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -59,10 +75,27 @@ function load_splines(splines) {
 	for (spline of splines) {
 		var nurbsControlPoints = [];
 		for (c of spline.ctrlp) {
-			c.push(1); // add weight index
+			c.push(1); // add weight=1 information
+			if ( c[0] < min.x ) {
+				min.x = c[0];
+			}
+			if ( c[1] < min.y ) {
+				min.y = c[0];
+			}
+			if ( c[2] < min.z ) {
+				min.z = c[0];
+			}
+			if ( c[0] > max.x ) {
+				max.x = c[0];
+			}
+			if ( c[1] > max.y ) {
+				max.y = c[0];
+			}
+			if ( c[2] > max.z ) {
+				max.z = c[0];
+			}
 			vec = new THREE.Vector4();
 			vec.fromArray(c);
-			console.log(vec);
 			nurbsControlPoints.push(vec);
 		}
 		var nurbsDegree = 3;
@@ -86,6 +119,21 @@ function load_splines(splines) {
 		nurbsControlPointsLine.position.copy( nurbsMesh.position );
 		group.add( nurbsControlPointsLine );
 	}
+
+	reposition_camera();
+}
+
+function reposition_camera() {
+	x_length = max.x - min.x;
+	y_length = max.y - min.y;
+	var longest_dimension = (x_length > y_length) ? x_length : y_length;
+	console.log(longest_dimension);
+	var deg=35;
+	z_shouldbe = (longest_dimension / 2 ) / Math.tan(deg * Math.PI/180);
+	console.log(z_shouldbe);
+	camera.position.x = (max.x+min.x)/2;
+	camera.position.y = (max.y+min.y)/2;
+	camera.position.z = z_shouldbe;
 }
 
 function onWindowResize() {
