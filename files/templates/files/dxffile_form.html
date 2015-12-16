@@ -1,4 +1,26 @@
-<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="{% static 'normalize.css' %}">
+	<link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+<div id="canvas">
+</div>
+<div id="controls">
+<form id="uploaddxf" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Create" />
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.js"></script>
+<script src="{% static 'NURBSCurve.js' %}"></script>
+<script src="{% static 'NURBSUtils.js' %}"></script>
+<script src="{% static 'scene.js' %}"></script>
+<script>
+init();
+animate();
+</script>
+</body
+</html>
 </form>

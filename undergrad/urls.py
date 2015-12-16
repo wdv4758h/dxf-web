@@ -10,6 +10,5 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^home', 'files.views.index'),
     url(r'', include('files.urls', namespace='files')),
 )
