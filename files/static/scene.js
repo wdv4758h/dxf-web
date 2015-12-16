@@ -71,6 +71,17 @@ var init = function() {
 }
 
 function load_splines(splines) {
+	// clear min and max before loading the new splines
+	max = {
+		x: 0,
+		y: 0,
+		z: 0
+	}
+	min = {
+		x: 0,
+		y: 0,
+		z: 0
+	}
 	console.log("Loading splines");
 	for (spline of splines) {
 		var nurbsControlPoints = [];
