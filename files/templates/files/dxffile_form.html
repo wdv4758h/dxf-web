@@ -2,23 +2,154 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<link rel="stylesheet" href="{% static 'normalize.css' %}">
-	<link rel="stylesheet" href="{% static 'main.css' %}">
+<link rel="stylesheet" href="{% static 'normalize.css' %}">
+<link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
 <body>
 <div id="canvas">
 </div>
-<div id="controls">
-<form id="uploaddxf" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Create" />
-</form>
-<h2>Use analyzed DXF</h2>
-<form id="directinput">
-	<input type="text" name="custom_url"/>
-    <input type="submit" value="Get result" />
-	<button id="clear">Clear scene</button>
-</form>
+<div id="controls" class="panel">
+	<form>
+		<fieldset>
+			<legend>Specify DXF file</legend>
+			<input type="file" onchange="this.form.submit()" name="file"/>
+		</fieldset>
+	</form>
+	<form>
+		<fieldset class="radioBtn">
+			<legend>Processing Method</legend>
+
+			<input type="radio" name="method" value="cut" id="method.cut">
+			<label for="method.cut">Cutting</label>
+
+			<input type="radio" name="method" value="engrave" id="method.engrave">
+			<label for="method.engrave">Engraving</label>
+
+			<input type="radio" name="method" value="mark" id="method.mark">
+			<label for="method.mark">Marking</label>
+
+			<input type="radio" name="method" value="route" id="method.route">
+			<label for="method.route">Routing</label>
+		</fieldset>
+
+		<fieldset class="radioBtn table">
+			<legend>Sheet Material</legend>
+
+			<div>
+				<span class="title">From</span>
+				<input type="radio" name="supplier" value="companyName" id="supplier.supplier">
+				<label for="supplier.supplier">Supplier</label>
+
+				<input type="radio" name="supplier" value="customer" id="supplier.customer">
+				<label for="supplier.customer">Customer</label>
+			</div>
+
+			<div>
+				<span class="title">Type</span>
+				<input type="radio" name="sheet" value="acrylic" id="sheet.acrylic">
+				<label for="sheet.acrylic">Acrylic</label>
+
+				<input type="radio" name="sheet" value="mdf" id="sheet.mdf">
+				<label for="sheet.mdf">MDF</label>
+
+				<input type="radio" name="sheet" value="plasswood" id="sheet.plasswood">
+				<label for="sheet.plasswood">Plasswood</label>
+
+				<input type="radio" name="sheet" value="stainlessSteel" id="sheet.stainlessSteel">
+				<label for="sheet.stainlessSteel">Stainless Steel</label>
+
+				<input type="radio" name="sheet" value="carbonSteel" id="sheet.carbonSteel">
+				<label for="sheet.carbonSteel">Carbon Steel</label>
+
+				<input type="radio" name="sheet" value="zinc" id="sheet.zinc">
+				<label for="sheet.zinc">Zinc</label>
+
+				<input type="radio" name="sheet" value="other" id="sheet.other">
+				<label for="sheet.other">Other</label>
+			</div>
+
+			<div>
+				<span class="title">Destails</span>
+				<select name="sheetThickness">
+					<option value="1">1</option>
+					<option value="3">3</option>
+					<option value="5">5</option>
+					<option value="10">10</option>
+				</select>
+				mm
+
+				<input type="radio" name="type" value="clear" id="type.clear">
+				<label for="type.clear">Clear</label>
+
+				<input type="radio" name="type" value="white" id="type.white">
+				<label for="type.white">White</label>
+
+				<span class="radioBtnTxtGrp">
+					<input type="radio" name="type" value="other" id="type.other">
+					<label for="type.other">Other Color</label>
+					<input type="text" name="typeModel" placeholder="ex. 305">
+				</span>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>Extra Sevices</legend>
+			<ul>
+				<li>
+				<input type="checkbox" value="polish" id="service.polish">
+				<label for="service.polish">Diamond polishing (5%)</label>
+				</li>
+				<li>
+				<input type="checkbox" value="coloring" id="service.coloring">
+				<label for="service.coloring">Acrylic coloring (2%)</label>
+				</li>
+				<li>
+				<input type="checkbox" value="rearFixture" id="service.rearFixture">
+				<label for="service.rearFixture">Installment of rear fixtures (1%)</label>
+				</li>
+				<li>
+				<input type="checkbox" value="pack" id="service.pack">
+				<label for="service.pack">Packaging (1%)</label>
+				</li>
+				<li>
+				<input type="checkbox" value="paint" id="service.paint">
+				<label for="service.paint">Painting charge</label>
+				<input type="number" name="paintCost" min="0" step="any" placeholder="0.00">
+				.-
+				</li>
+				<li>
+				<input type="checkbox" value="outsource" id="service.outsource">
+				<label for="service.outsource">Outsourcing charge</label>
+				<input type="number" name="outsourceCost" min="0" step="any" placeholder="0.00" >
+				.-
+				</li>
+				<li>
+				<input type="checkbox" value="other" id="service.other">
+				<label for="service.other">Other service charge</label>
+				<input type="number" name="otherCost" min="0" step="any" placeholder="0.00">
+				.-
+				</li>
+			</ul>
+		</fieldset>
+	</form>
+
+	<div class="price">295.00</div>
+
+	<ul>
+		<li>Dimension: 150x300mm</li>
+		<li>Duration: 10min 21sec</li>
+		<li>other: detailsToPrint</li>
+	</ul>
+	<form id="uploaddxf" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Create" />
+	</form>
+	<h2>Use analyzed DXF</h2>
+	<form id="directinput">
+		<input type="text" name="custom_url"/>
+		<input type="submit" value="Get result" />
+		<button id="clear">Clear scene</button>
+	</form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
@@ -38,13 +169,13 @@ function poll() {
 			$.ajax({ url: url, success: function(data) {
 				console.log(data);
 				if (data.finish == true) {
-					console.log('finished');
-					$.ajax({ url: url+'nurbs', success: function(res) {
-						splines_res = res.data;
-						load_splines(splines_res);
-						}, error: function(xhr, code, msg) {
-						console.log('Getting nurbs failed: '+code+' '+msg);
-						}
+				console.log('finished');
+				$.ajax({ url: url+'nurbs', success: function(res) {
+					splines_res = res.data;
+					load_splines(splines_res);
+					}, error: function(xhr, code, msg) {
+					console.log('Getting nurbs failed: '+code+' '+msg);
+					}
 					});
 				} else {
 				console.log('not finished');
@@ -56,14 +187,14 @@ function poll() {
 $('#uploaddxf').ajaxForm();
 $('#uploaddxf').submit(function (e) {
 		$(this).ajaxSubmit({
-			type: "POST",
-			url: '/',
-			success: function(data) {
-				console.log(data);
-				url = data.result_url;
-				poll();
-			}
-			});
+type: "POST",
+url: '/',
+success: function(data) {
+console.log(data);
+url = data.result_url;
+poll();
+}
+});
 
 		e.preventDefault();
 		});
@@ -77,7 +208,7 @@ $('#directinput').submit(function (e) {
 			console.log('Getting nurbs failed: '+code+' '+msg);
 			alert('Getting nurbs failed: '+code+' '+msg);
 			}
-		});
+			});
 		e.preventDefault();
 		});
 $('#clear').click(function(e) {

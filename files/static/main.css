@@ -18,4 +18,101 @@ body {
 	height: 100%;
 	width: 350px;
 	background-color: white;
+	overflow-y: scroll;
+	box-sizing: border-box;
+}
+body {
+    font-family: serif;
+    color: #34495E;
+}
+
+.panel {
+    background-color: #ECF0F1;
+    line-height: 1.7em;
+    padding: 1em;
+}
+
+.panel fieldset {
+    margin-bottom: 1.7em;
+}
+
+.panel legend {
+    color: #3498DB;
+    font-family: sans-serif;
+}
+
+.panel .table > div {
+    border-top: 1px solid #bfbfbf;
+}
+
+.panel .table > div:first-of-type {
+    border-top: none;
+}
+
+.panel .table > div > .title {
+    font-family: sans-serif;
+    color: #bfbfbf;
+}
+
+.panel input[type=radio] {
+    display: none;
+}
+
+.panel .radioBtn input[type=radio]:checked + label {
+    background-color: #3498DB;
+    color: #ECF0F1;
+}
+
+.panel .radioBtn label {
+    border-radius: 3px;
+    color: #34495E;
+    padding: 2pt 5pt;
+    white-space: nowrap;
+}
+
+.panel .radioBtnTxtGrp {
+    white-space: nowrap;
+}
+
+.panel .radioBtnTxtGrp input[type=radio]:checked + input[type=text] {
+    background-color: #F8C957;
+}
+
+.panel .radioBtnTxtGrp input[type=text] {
+    width: 6em;
+}
+
+.panel input[type=text], .panel input[type=number] {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px dotted #34495E;
+    color: #34495E;
+    font: 1em serif;
+}
+
+.panel input[type=number] {
+    text-align: center;
+    width: 5em;
+}
+
+.panel input[type=text]:invalid,
+.panel input[type=number]:invalid,
+.panel input[type=number]:out-of-range {
+    background-color: #F8C957 !important;
+    border: none;
+}
+
+.panel .price {
+    border-bottom: 1px solid #bfbfbf;
+    border-top: 1px solid #bfbfbf;
+    font: 2em sans-serif;
+    margin: 0.5em 0;
+    padding: 0.5em 0;
+    text-align: right;
+    color: #3498DB;
+}
+
+.panel .price::after {
+    content: " .-";
+    color: #bfbfbf;
 }
