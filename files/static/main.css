@@ -32,6 +32,11 @@ body {
     padding: 1em;
 }
 
+.panel ul, .panel ol {
+	list-style-type: none;
+	padding-left: 0;
+}
+
 .panel fieldset {
     margin-bottom: 1.7em;
 }
