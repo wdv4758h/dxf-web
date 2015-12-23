@@ -26,6 +26,10 @@ body {
     color: #34495E;
 }
 
+.hidden {
+	display: none;
+}
+
 .panel {
     background-color: #ECF0F1;
     line-height: 1.7em;

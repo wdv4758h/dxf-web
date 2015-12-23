@@ -44,7 +44,7 @@
 				<label for="supplier.customer">Customer</label>
 			</div>
 
-			<div>
+			<div id="material-type" class="hidden">
 				<span class="title">Type</span>
 				<input type="radio" name="sheet" value="acrylic" id="sheet.acrylic">
 				<label for="sheet.acrylic">Acrylic</label>
@@ -68,13 +68,24 @@
 				<label for="sheet.other">Other</label>
 			</div>
 
-			<div>
-				<span class="title">Destails</span>
+			<div id="material-details">
+			<div id="material-details-acrylic" class="hidden">
+				<span class="title">Details</span>
 				<select name="sheetThickness">
-					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="2.5">2.5</option>
 					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="4.76">4.76</option>
 					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
 					<option value="10">10</option>
+					<option value="12">12</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+					<option value="30">30</option>
 				</select>
 				mm
 
@@ -90,6 +101,122 @@
 					<input type="text" name="typeModel" placeholder="ex. 305">
 				</span>
 			</div>
+			<div id="material-details-mdf" class="hidden">
+				<span class="title">Details</span>
+				<select name="sheetThickness">
+					<option value="2">2</option>
+					<option value="2.5">2.5</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="4.76">4.76</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
+					<option value="10">10</option>
+					<option value="12">12</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+					<option value="30">30</option>
+				</select>
+				mm
+			</div>
+			<div id="material-details-plasswood" class="hidden">
+				<span class="title">Details</span>
+				<select name="sheetThickness">
+					<option value="2">2</option>
+					<option value="2.5">2.5</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="4.76">4.76</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
+					<option value="10">10</option>
+					<option value="12">12</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+					<option value="30">30</option>
+				</select>
+				mm
+
+				<input type="radio" name="type" value="indoor" id="type.indoor">
+				<label for="type.indoor">Indoor</label>
+
+				<input type="radio" name="type" value="outdoor" id="type.outdoor">
+				<label for="type.outdoor">Outdoor</label>
+			</div>
+			<div id="material-details-stainlessSteel" class="hidden">
+				<span class="title">Details</span>
+				<select name="sheetThickness">
+					<option value="2">2</option>
+					<option value="2.5">2.5</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="4.76">4.76</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
+					<option value="10">10</option>
+					<option value="12">12</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+					<option value="30">30</option>
+				</select>
+				mm
+
+				<input type="radio" name="type" value="mirror" id="type.mirror">
+				<label for="type.mirror">Mirror</label>
+
+				<input type="radio" name="type" value="hairline" id="type.hairline">
+				<label for="type.hairline">Hairline</label>
+
+				<input type="radio" name="type" value="normal" id="type.normal">
+				<label for="type.normal">Normal</label>
+			</div>
+			<div id="material-details-carbonSteel" class="hidden">
+				<span class="title">Details</span>
+				<select name="sheetThickness">
+					<option value="2">2</option>
+					<option value="2.5">2.5</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="4.76">4.76</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
+					<option value="10">10</option>
+					<option value="12">12</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+					<option value="30">30</option>
+				</select>
+				mm
+			</div>
+			<div id="material-details-zinc" class="hidden">
+				<span class="title">Details</span>
+				<select name="sheetThickness">
+					<option value="2">2</option>
+					<option value="2.5">2.5</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="4.76">4.76</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
+					<option value="10">10</option>
+					<option value="12">12</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+					<option value="30">30</option>
+				</select>
+				mm
+			</div>
+			</div><!-- end #material-details -->
 		</fieldset>
 
 		<fieldset>
@@ -214,6 +341,19 @@ $('#directinput').submit(function (e) {
 $('#clear').click(function(e) {
 		e.preventDefault();
 		group.children = [];
+		});
+$('input[name="supplier"]').change(function() {
+		if ( this.value == 'companyName' ) {
+			$('div#material-type').removeClass('hidden');
+		} else if ( this.value == 'customer' ) {
+			$('div#material-type').addClass('hidden');
+			$('div#material-details > div').addClass('hidden');
+			$('input[name="sheet"]').attr('checked', false);
+		}
+		});
+$('input[name="sheet"]').change(function() {
+		$('div#material-details > div').addClass('hidden');
+		$('div#material-details-'+this.value).removeClass('hidden');
 		});
 </script>
 </body
