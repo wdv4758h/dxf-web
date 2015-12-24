@@ -15,7 +15,8 @@
 			<input type="file" onchange="this.form.submit()" name="file"/>
 		</fieldset>
 	</form>
-	<form>
+	<form id="spec">
+		{% csrf_token %}
 		<fieldset class="radioBtn">
 			<legend>Processing Method</legend>
 
@@ -291,12 +292,14 @@ animate();
 <script>
 var splines_res = [];
 var url = '';
+var length = 0;
 function poll() {
 	setTimeout(function() {
 			$.ajax({ url: url, success: function(data) {
 				console.log(data);
 				if (data.finish == true) {
 				console.log('finished');
+				length = data.length;
 				$.ajax({ url: url+'nurbs', success: function(res) {
 					splines_res = res.data;
 					load_splines(splines_res);
@@ -314,15 +317,14 @@ function poll() {
 $('#uploaddxf').ajaxForm();
 $('#uploaddxf').submit(function (e) {
 		$(this).ajaxSubmit({
-type: "POST",
-url: '/',
-success: function(data) {
-console.log(data);
-url = data.result_url;
-poll();
-}
-});
-
+			type: "POST",
+			url: '/',
+			success: function(data) {
+				console.log(data);
+				url = data.result_url;
+				poll();
+			}
+			});
 		e.preventDefault();
 		});
 $('#directinput').submit(function (e) {
@@ -334,6 +336,13 @@ $('#directinput').submit(function (e) {
 			}, error: function(xhr, code, msg) {
 			console.log('Getting nurbs failed: '+code+' '+msg);
 			alert('Getting nurbs failed: '+code+' '+msg);
+			}
+			});
+		$.ajax({ url: '/view/'+custom_url, success: function(res) {
+			length = res.length;
+			}, error: function(xhr, code, msg) {
+			console.log('Getting length failed: '+code+' '+msg);
+			alert('Getting length failed: '+code+' '+msg);
 			}
 			});
 		e.preventDefault();
@@ -354,6 +363,37 @@ $('input[name="supplier"]').change(function() {
 $('input[name="sheet"]').change(function() {
 		$('div#material-details > div').addClass('hidden');
 		$('div#material-details-'+this.value).removeClass('hidden');
+		});
+$('form#spec').change(function() {
+		var spec = {
+			dimension: 100,
+			length: length,
+			material: $('input[name="sheet"]').val(),
+			sheetThickness: $('select[name="sheetThickness"]').val(),
+			process: $('input[name="method"]').val(),
+			csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+			};
+		console.log(spec);
+		$.post("/price", spec).done(function(data) {
+			$('div.price').text(data.price);
+			console.log(data);
+			});
+		});
+$('form#spec').submit(function(e) {
+		e.preventDefault();
+		var spec = {
+			dimension: 100,
+			length: length,
+			material: $('input[name="sheet"]').val(),
+			sheetThickness: $('select[name="sheetThickness"]').val(),
+			process: $('input[name="method"]').val(),
+			csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+			};
+		console.log(spec);
+		$.post("/price", spec).done(function(data) {
+			$('div.price').text(data.price);
+			console.log(data);
+			});
 		});
 </script>
 </body

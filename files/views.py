@@ -108,7 +108,7 @@ def price(request):
         dimension = float(post.get('dimension', 0))
         length    = float(post.get('length', 0))
         material  = post.get('material', '')
-        thick     = float(post.get('thick', ''))
+        thick     = float(post.get('sheetThickness', ''))
         process   = post.get('process', '')
 
         material_price = elements_price.get(material, '')
