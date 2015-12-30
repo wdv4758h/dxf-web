@@ -25,6 +25,8 @@ var min = {
 	z: 0
 }
 
+var nurbsGeometries = [];
+
 // init base grid
 var init = function() {
 
@@ -83,6 +85,7 @@ function load_splines(splines) {
 		z: 0
 	}
 	console.log("Loading splines");
+	var i=0;
 	for (spline of splines) {
 		var nurbsControlPoints = [];
 		for (c of spline.ctrlp) {
@@ -116,6 +119,9 @@ function load_splines(splines) {
 		nurbsGeometry.vertices = nurbsCurve.getPoints(200);
 		triangles = THREE.Shape.Utils.triangulateShape(nurbsGeometry.vertices, []);
 
+		nurbsGeometries.push(nurbsGeometry);
+
+		/*
 		for( var i = 0; i < triangles.length; i++ ){
 			nurbsGeometry.faces.push( new THREE.Face3( triangles[i][0], triangles[i][1], triangles[i][2] ));
 		}
@@ -129,6 +135,57 @@ function load_splines(splines) {
 		var nurbsControlPointsLine = new THREE.Line( nurbsControlPointsGeometry, nurbsControlPointsMaterial );
 		nurbsControlPointsLine.position.copy( nurbsMesh.position );
 		group.add( nurbsControlPointsLine );
+		*/
+
+		i++;
+	}
+
+	// find holes
+	for ( i=0; i<nurbsGeometries.length; i++ ) {
+		nurbsGeometries[i].computeBoundingBox();
+		var shape = new THREE.Shape(nurbsGeometries[i].vertices);
+	}
+
+	var holeshapes = [];
+	for ( i=0; i<nurbsGeometries.length; i++ ) {
+		for ( j=0; j<nurbsGeometries.length; j++ ) {
+			if ( i == j ) continue;
+			if ( nurbsGeometries[i].boundingBox.max.x < nurbsGeometries[j].boundingBox.max.x &&
+					nurbsGeometries[i].boundingBox.max.y < nurbsGeometries[j].boundingBox.max.y &&
+					nurbsGeometries[i].boundingBox.min.x > nurbsGeometries[j].boundingBox.min.x &&
+					nurbsGeometries[i].boundingBox.min.y > nurbsGeometries[j].boundingBox.min.y ) {
+				console.log(i+" is contained in "+j);
+				holeshapes.push({"hole":i, "shape":j});
+			}
+		}
+	}
+
+	var not_rendered = new Map();
+	for ( i=0; i<nurbsGeometries.length; i++ ) {
+		not_rendered.set(i, true);
+	}
+	// render shapes with holes
+	for ( k=0; k<holeshapes.length; k++ ) {
+		sh=holeshapes[k].shape;
+		ho=holeshapes[k].hole;
+		not_rendered.delete(sh);
+		not_rendered.delete(ho);
+		var shape = new THREE.Shape(nurbsGeometries[sh].vertices);
+		shape.holes = [ new THREE.Path(nurbsGeometries[ho].vertices) ];
+
+		var shapegeom = new THREE.ShapeGeometry(shape);
+		var mesh = new THREE.Mesh(shapegeom, new THREE.MeshBasicMaterial( { color: 0x777777 } ) );
+
+		group.add(mesh);
+	}
+
+	// render rest of the shapes
+	for ( l of not_rendered ) {
+		console.log(l);
+		var shape = new THREE.Shape(nurbsGeometries[l[0]].vertices);
+		var shapegeom = new THREE.ShapeGeometry(shape);
+		var mesh = new THREE.Mesh(shapegeom, new THREE.MeshBasicMaterial( { color: 0x777777 } ) );
+		group.add(mesh);
 	}
 
 	reposition_camera();
