@@ -146,7 +146,7 @@ function load_splines(splines) {
 		var shape = new THREE.Shape(nurbsGeometries[i].vertices);
 	}
 
-	var holeshapes = [];
+	var holeshapes = new Map();
 	for ( i=0; i<nurbsGeometries.length; i++ ) {
 		for ( j=0; j<nurbsGeometries.length; j++ ) {
 			if ( i == j ) continue;
@@ -155,7 +155,11 @@ function load_splines(splines) {
 					nurbsGeometries[i].boundingBox.min.x > nurbsGeometries[j].boundingBox.min.x &&
 					nurbsGeometries[i].boundingBox.min.y > nurbsGeometries[j].boundingBox.min.y ) {
 				console.log(i+" is contained in "+j);
-				holeshapes.push({"hole":i, "shape":j});
+				if ( holeshapes.has(j) ) {
+					holeshapes.get(j).push(i);
+				} else {
+					holeshapes.set(j, [i]);
+				}
 			}
 		}
 	}
@@ -165,13 +169,15 @@ function load_splines(splines) {
 		not_rendered.set(i, true);
 	}
 	// render shapes with holes
-	for ( k=0; k<holeshapes.length; k++ ) {
-		sh=holeshapes[k].shape;
-		ho=holeshapes[k].hole;
+	for ( k of holeshapes ) {
+		sh=k[0];
 		not_rendered.delete(sh);
-		not_rendered.delete(ho);
 		var shape = new THREE.Shape(nurbsGeometries[sh].vertices);
-		shape.holes = [ new THREE.Path(nurbsGeometries[ho].vertices) ];
+
+		for ( m of k[1] ) {
+			not_rendered.delete(m);
+			shape.holes.push(new THREE.Path(nurbsGeometries[m].vertices));
+		}
 
 		var shapegeom = new THREE.ShapeGeometry(shape);
 		var mesh = new THREE.Mesh(shapegeom, new THREE.MeshBasicMaterial( { color: 0x777777 } ) );
@@ -181,7 +187,6 @@ function load_splines(splines) {
 
 	// render rest of the shapes
 	for ( l of not_rendered ) {
-		console.log(l);
 		var shape = new THREE.Shape(nurbsGeometries[l[0]].vertices);
 		var shapegeom = new THREE.ShapeGeometry(shape);
 		var mesh = new THREE.Mesh(shapegeom, new THREE.MeshBasicMaterial( { color: 0x777777 } ) );
