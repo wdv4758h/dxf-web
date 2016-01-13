@@ -179,8 +179,11 @@ function load_splines(splines) {
 			shape.holes.push(new THREE.Path(nurbsGeometries[m].vertices));
 		}
 
-		var shapegeom = new THREE.ShapeGeometry(shape);
-		var mesh = new THREE.Mesh(shapegeom, new THREE.MeshBasicMaterial( { color: 0x777777 } ) );
+		var extrudegeom = new THREE.ExtrudeGeometry(shape, {
+			amount: 40,
+			bevelEnabled: false,
+		});
+		var mesh = new THREE.Mesh(extrudegeom, new THREE.MeshPhongMaterial( { color: 0x777777, specular: 0xa0a0a0, shininess: 30 } ) );
 
 		group.add(mesh);
 	}
@@ -188,8 +191,11 @@ function load_splines(splines) {
 	// render rest of the shapes
 	for ( l of not_rendered ) {
 		var shape = new THREE.Shape(nurbsGeometries[l[0]].vertices);
-		var shapegeom = new THREE.ShapeGeometry(shape);
-		var mesh = new THREE.Mesh(shapegeom, new THREE.MeshBasicMaterial( { color: 0x777777 } ) );
+		var extrudegeom = new THREE.ExtrudeGeometry(shape, {
+			amount: 40,
+			bevelEnabled: false,
+		});
+		var mesh = new THREE.Mesh(extrudegeom, new THREE.MeshPhongMaterial( { color: 0x777777, specular: 0xa0a0a0, shininess: 30 } ) );
 		group.add(mesh);
 	}
 
